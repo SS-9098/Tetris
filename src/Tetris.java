@@ -22,6 +22,7 @@ public class Tetris extends Main implements ActionListener, KeyListener
     boolean transfer;//True if piece moved from port to board
     Timer timer;
     Timer falling;
+    Color piece_color;
 
     public void Initialize()
     {
@@ -79,6 +80,20 @@ public class Tetris extends Main implements ActionListener, KeyListener
         piece_pos[0] = 3;
         piece_pos[1] = 0;
         piece_type = (int) (Math.random() * 6);
+        switch((int)(Math.random()*4))
+        {
+            case 0:
+                piece_color = Color.red;
+                break;
+            case 1:
+                piece_color = Color.blue;
+                break;
+            case 2:
+                piece_color = Color.green;
+                break;
+            default:
+                piece_color = Color.yellow;
+        }
         for(int i=0;i<4;i++)
         {
             for(int j=0;j<4;j++)
@@ -144,9 +159,9 @@ public class Tetris extends Main implements ActionListener, KeyListener
                 if(piece_bounds[i][j]==1 && piece_pos[0]+i<10)
                 {
                     if(transfer)
-                        cells[piece_pos[0]+i][piece_pos[1]+j].setBackground(Color.BLUE);
+                        cells[piece_pos[0]+i][piece_pos[1]+j].setBackground(piece_color);
                     else if(piece_pos[1]+j <6)
-                        port_cells[piece_pos[0]+i][piece_pos[1]+j].setBackground(Color.BLUE);
+                        port_cells[piece_pos[0]+i][piece_pos[1]+j].setBackground(piece_color);
                 }
             }
         }
@@ -486,7 +501,7 @@ public class Tetris extends Main implements ActionListener, KeyListener
             {
                 if(piece_bounds[i][j] == 1)
                 {
-                    cells[piece_pos[0]+i][piece_pos[1]+j].setBackground(Color.BLUE);
+                    cells[piece_pos[0]+i][piece_pos[1]+j].setBackground(piece_color);
                     blocks[piece_pos[0] + i][piece_pos[1] + j] = 1;
                 }
             }
