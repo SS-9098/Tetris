@@ -1,3 +1,3 @@
-'a' and 'd' to move piece
- Spacebar to rotate piece
- Game over when the top piece touches the red line
+'a' and 'd' to move falling blocks
+ Spacebar to rotate falling blocks
+ Game over when the placed blocks touches the red line
