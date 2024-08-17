@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Objects;
 
 public class Tetris extends Main implements ActionListener, KeyListener
 {
@@ -14,8 +15,13 @@ public class Tetris extends Main implements ActionListener, KeyListener
     JPanel port;
     JLabel[][] cells;
     JLabel[][] port_cells;
+    JLabel Score, diff_text;
+    JPanel Difficulty;
+    JButton easy, normal, hard;
+    JButton reset;
     int count;
     int piece_type;
+    int score,multiplier;
     int[][] piece_bounds = {{0,0,0,0},{0,0,0,0},{0,0,0,0},{0,0,0,0}};
     int[] piece_pos = {5,0};
     int[][] blocks;//keeps tracks of pieces that are placed
@@ -31,13 +37,58 @@ public class Tetris extends Main implements ActionListener, KeyListener
         frame = new MyFrame();
         board = new Board();
         port = new JPanel();
+        Score = new JLabel("Score:\n");
+        diff_text = new JLabel("Difficulty", SwingConstants.CENTER);
+        Difficulty = new JPanel();
+        easy = new JButton("I");
+        normal = new JButton("II");
+        hard = new JButton("III");
+        reset = new JButton("START");
+        easy.addActionListener(this);
+        normal.addActionListener(this);
+        hard.addActionListener(this);
+        reset.addActionListener(this);
         cells = new JLabel[10][16];
         port_cells = new JLabel[10][6];
         blocks = new int[10][16];
+        score=0;
+
+        Score.setVerticalAlignment(SwingConstants.TOP);
+        Score.setFont(new Font("Verdana", Font.PLAIN, 36));
+        Score.setForeground(Color.white);
+        diff_text.setFont(new Font("Verdana", Font.BOLD, 18));
+        diff_text.setForeground(Color.red);
 
         port.setLayout(new GridLayout(6,10));
         port.setBounds(0,0,586,200);
         port.setBackground(Color.red);
+        Difficulty.setBackground(Color.black);
+
+        diff_text.setBounds(0,0,210,50);
+        Score.setBounds(586,0,210,200);
+        Difficulty.setBounds(586,600,210,200);
+        Difficulty.setLayout(null);
+
+        easy.setBounds(10,50,50,30);
+        normal.setBounds(80,50,50,30);
+        hard.setBounds(150,50,50,30);
+        reset.setBounds(10,100,190,30);
+        easy.setFocusable(false);
+        normal.setFocusable(false);
+        hard.setFocusable(false);
+        reset.setFocusable(false);
+        easy.setBackground(Color.darkGray);
+        normal.setBackground(Color.darkGray);
+        hard.setBackground(Color.darkGray);
+        reset.setBackground(Color.darkGray);
+        easy.setBorder(new LineBorder(Color.black));
+        normal.setBorder(new LineBorder(Color.black));
+        hard.setBorder(new LineBorder(Color.black));
+        reset.setBorder(new LineBorder(Color.black));
+        easy.setForeground(Color.black);
+        normal.setForeground(Color.black);
+        hard.setForeground(Color.black);
+        reset.setForeground(Color.black);
 
         for(int i=0; i<16; i++)
         {
@@ -60,17 +111,23 @@ public class Tetris extends Main implements ActionListener, KeyListener
             }
         }
 
+        Difficulty.add(diff_text);
+        Difficulty.add(easy);
+        Difficulty.add(normal);
+        Difficulty.add(hard);
+        Difficulty.add(reset);
         frame.add(port);
         frame.add(board);
+        frame.add(Score);
+        frame.add(Difficulty);
         frame.addKeyListener(this);
         frame.setVisible(true);
 
-        timer.start();
-        start();
     }
 
     public void start()
     {
+        timer.start();
         new_piece();
     }
 
@@ -246,6 +303,68 @@ public class Tetris extends Main implements ActionListener, KeyListener
              piece_pos[1]++;
         }
 
+        if(e.getSource() == easy)
+        {
+            falling.setDelay(600);
+            easy.setBackground(Color.green);
+            normal.setBackground(Color.darkGray);
+            hard.setBackground(Color.darkGray);
+        }
+        if(e.getSource() == normal)
+        {
+            falling.setDelay(400);
+            normal.setBackground(Color.green);
+            easy.setBackground(Color.darkGray);
+            hard.setBackground(Color.darkGray);
+        }
+        if(e.getSource() == hard)
+        {
+            falling.setDelay(200);
+            hard.setBackground(Color.green);
+            normal.setBackground(Color.darkGray);
+            easy.setBackground(Color.darkGray);
+        }
+        if(e.getSource() == reset)
+        {
+            if(Objects.equals(reset.getText(), "START") || Objects.equals(reset.getText(), "NEW GAME"))
+            {
+                reset.setText("RESET");
+                score=0;
+                Score.setText("<html>Score:<br/>0</html>");
+                for(int i=0;i<4;i++)
+                {
+                    for(int j=0;j<4;j++)
+                    {
+                        if(piece_bounds[i][j]==1)
+                            cells[piece_pos[0]+i][piece_pos[1]+j].setBackground(Color.gray);
+                    }
+                }
+                for(int i=0;i<10;i++)
+                {
+                    for(int j=0;j<16;j++)
+                    {
+                        if(blocks[i][j]==1)
+                        {
+                            cells[i][j].setBackground(Color.gray);
+                            blocks[i][j]=0;
+                        }
+                    }
+                }
+                start();
+            }
+            else
+            {
+                falling.stop();
+                timer.stop();
+                for(int i=0;i<10;i++)
+                {
+                    for(int j=0;j<16;j++)
+                        blocks[i][j]=0;
+                }
+                reset.setText("START");
+            }
+        }
+
         for(int i=0;i<16;i++)//Checks if a line needs to be cleared
         {
             count =0;
@@ -255,14 +374,19 @@ public class Tetris extends Main implements ActionListener, KeyListener
                     count++;
             }
             if(count==10)
+            {
                 line_clear(i);
+                multiplier++;
+            }
         }
+        multiplier=0;
 
         for(int i=0;i<10;i++)//Game over Condition
         {
             if(blocks[i][0]==1)
             {
                 System.out.println("GAME OVER!!!");
+                reset.setText("NEW GAME");
                 timer.stop();
                 falling.stop();
             }
@@ -491,6 +615,13 @@ public class Tetris extends Main implements ActionListener, KeyListener
                 }
             }
         }
+        if(falling.getDelay()==600)
+            score += (multiplier + 1) * 100;
+        else if(falling.getDelay()==400)
+            score += (multiplier + 1) * 125;
+        else
+            score += (multiplier + 1) * 150;
+        Score.setText("<html>Score:<br/>"+score+"</html>");
     }
 
     public void board_update()//update positions of pieces when new piece is placed

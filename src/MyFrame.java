@@ -5,8 +5,8 @@ public class MyFrame extends JFrame
 {
     public MyFrame()
     {
-        this.setSize(600,800);
-		this.getContentPane().setBackground(Color.red);
+        this.setSize(810,800);
+		this.getContentPane().setBackground(Color.black);
         this.setLayout(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Tetris");
