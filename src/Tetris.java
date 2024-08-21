@@ -404,7 +404,7 @@ public class Tetris extends Main implements ActionListener, KeyListener
             l_rotate();
         else if(piece_type == 4)
             s_rotate();
-        else
+        else if(piece_type == 5)
             s_rotate2();
     }
 
