@@ -60,19 +60,19 @@ public class Tetris extends Main implements ActionListener, KeyListener
         diff_text.setForeground(Color.red);
 
         port.setLayout(new GridLayout(6,10));
-        port.setBounds(0,0,586,200);
+        port.setPreferredSize(new Dimension(586,200));
         port.setBackground(Color.red);
         Difficulty.setBackground(Color.black);
 
-        diff_text.setBounds(0,0,210,50);
-        Score.setBounds(586,0,210,200);
-        Difficulty.setBounds(586,600,210,200);
-        Difficulty.setLayout(null);
+        diff_text.setPreferredSize(new Dimension(210,50));
+        Score.setPreferredSize(new Dimension(210,200));
+        Difficulty.setPreferredSize(new Dimension(210,200));
+        Difficulty.setLayout(new BorderLayout(20,20));
 
-        easy.setBounds(10,50,50,30);
-        normal.setBounds(80,50,50,30);
-        hard.setBounds(150,50,50,30);
-        reset.setBounds(10,100,190,30);
+        easy.setPreferredSize(new Dimension(50,30));
+        normal.setPreferredSize(new Dimension(50,30));
+        hard.setPreferredSize(new Dimension(50,30));
+        reset.setPreferredSize(new Dimension(190,30));
         easy.setFocusable(false);
         normal.setFocusable(false);
         hard.setFocusable(false);
@@ -111,15 +111,19 @@ public class Tetris extends Main implements ActionListener, KeyListener
             }
         }
 
-        Difficulty.add(diff_text);
-        Difficulty.add(easy);
-        Difficulty.add(normal);
-        Difficulty.add(hard);
-        Difficulty.add(reset);
-        frame.add(port);
-        frame.add(board);
-        frame.add(Score);
-        frame.add(Difficulty);
+        Difficulty.add(diff_text, BorderLayout.NORTH);
+        Difficulty.add(easy, BorderLayout.WEST);
+        Difficulty.add(normal, BorderLayout.CENTER);
+        Difficulty.add(hard, BorderLayout.EAST);
+        Difficulty.add(reset, BorderLayout.SOUTH);
+        Panel temp1 = new Panel(new BorderLayout());
+        Panel temp2 = new Panel(new BorderLayout());
+        temp1.add(port, BorderLayout.CENTER);
+        temp1.add(board, BorderLayout.SOUTH);
+        temp2.add(Score, BorderLayout.WEST);
+        temp2.add(Difficulty, BorderLayout.SOUTH);
+        frame.add(temp1, BorderLayout.WEST);
+        frame.add(temp2, BorderLayout.CENTER);
         frame.addKeyListener(this);
         frame.setVisible(true);
 
