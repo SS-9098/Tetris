@@ -1,7 +1,7 @@
 
 ## How to Play
-- Extract zip files into a folder.
-- Run ```.JAR``` file.
+- Extract zip files into a folder
+- Run ```Tetris.JAR```
 
 ## Game Instructions
 - 'a' and 'd' to move falling blocks
@@ -11,5 +11,7 @@
 - Select Difficult and press start to start the game
 - Clear multiple lines simultaneously at higher difficulties to score more!
 
-## Requirements
-JVM installed version 8 or later(Preferably JDK 21 or later).
+
+
+> [!IMPORTANT]
+> Make Sure JVM version 8 or later(Preferably JDK 21 or later) is installed in your machine!
