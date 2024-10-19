@@ -1,5 +1,6 @@
 import javax.sound.sampled.Line;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -56,23 +57,24 @@ public class Tetris extends Main implements ActionListener, KeyListener
         Score.setVerticalAlignment(SwingConstants.TOP);
         Score.setFont(new Font("Verdana", Font.PLAIN, 36));
         Score.setForeground(Color.white);
-        diff_text.setFont(new Font("Verdana", Font.BOLD, 18));
+        diff_text.setFont(new Font("Verdana", Font.BOLD, 22));
         diff_text.setForeground(Color.red);
 
         port.setLayout(new GridLayout(6,10));
-        port.setPreferredSize(new Dimension(586,200));
+        port.setMinimumSize(new Dimension(586,200));
         port.setBackground(Color.red);
         Difficulty.setBackground(Color.black);
 
-        diff_text.setPreferredSize(new Dimension(210,50));
-        Score.setPreferredSize(new Dimension(210,200));
-        Difficulty.setPreferredSize(new Dimension(210,200));
-        Difficulty.setLayout(new BorderLayout(20,20));
+        diff_text.setMinimumSize(new Dimension(210,50));
+        Score.setMinimumSize(new Dimension(210,200));
+        Difficulty.setMinimumSize(new Dimension(210,200));
+        Difficulty.setLayout(new BorderLayout(20,10));
 
         easy.setPreferredSize(new Dimension(50,30));
         normal.setPreferredSize(new Dimension(50,30));
         hard.setPreferredSize(new Dimension(50,30));
-        reset.setPreferredSize(new Dimension(190,30));
+        reset.setPreferredSize(new Dimension(170,30));
+        reset.setMaximumSize(new Dimension(170,30));
         easy.setFocusable(false);
         normal.setFocusable(false);
         hard.setFocusable(false);
@@ -112,12 +114,17 @@ public class Tetris extends Main implements ActionListener, KeyListener
         }
 
         Difficulty.add(diff_text, BorderLayout.NORTH);
-        Difficulty.add(easy, BorderLayout.WEST);
-        Difficulty.add(normal, BorderLayout.CENTER);
-        Difficulty.add(hard, BorderLayout.EAST);
-        Difficulty.add(reset, BorderLayout.SOUTH);
+        Panel temp = new Panel(new FlowLayout(FlowLayout.CENTER,10,10));
+        temp.add(easy);
+        temp.add(normal);
+        temp.add(hard);
+        //reset.setBorder(new EmptyBorder(10,10,30,10));
+        Panel temp3 = new Panel();
+        temp3.add(reset);
+        Difficulty.add(temp,BorderLayout.CENTER);
+        Difficulty.add(temp3, BorderLayout.SOUTH);
         Panel temp1 = new Panel(new BorderLayout());
-        Panel temp2 = new Panel(new BorderLayout());
+        Panel temp2 = new Panel(new BorderLayout(0,100));
         temp1.add(port, BorderLayout.CENTER);
         temp1.add(board, BorderLayout.SOUTH);
         temp2.add(Score, BorderLayout.WEST);
@@ -126,7 +133,6 @@ public class Tetris extends Main implements ActionListener, KeyListener
         frame.add(temp2, BorderLayout.CENTER);
         frame.addKeyListener(this);
         frame.setVisible(true);
-
     }
 
     public void start()
